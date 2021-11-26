@@ -1,3 +1,3 @@
 fn main() {
-    println!("Hello, world!");
+   let board = ttt_rust::TicTacToeBoard::new();
 }
