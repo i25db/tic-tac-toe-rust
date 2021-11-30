@@ -12,7 +12,7 @@ impl TicTacToe {
     }
     // transforms a position starting at origin 1,1 into an index
     fn pos(x: i32, y: i32) -> usize {
-        (x - 1 + (3 * (y - 1))) as usize
+        (3 * y + x - 4) as usize
     }
 
     pub fn into_iter(&self) -> IntoIter<char, 9_usize> {
