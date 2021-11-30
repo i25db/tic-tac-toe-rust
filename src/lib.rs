@@ -10,38 +10,43 @@ impl TicTacToe {
             board: ['_'; 9]
         }
     }
+    // transforms a position starting at origin 1,1 into an index
+    fn pos(x: i32, y: i32) -> usize {
+        (x - 1 + (3 * (y - 1))) as usize
+    }
 
     pub fn into_iter(&self) -> IntoIter<char, 9_usize> {
         self.board.into_iter()
     } 
 
-    pub fn at(&self, x: i8, y: i8) -> Option<char> {
+    pub fn at(&self, x: i32, y: i32) -> Option<char> {
         // Bounds check
         if x > 3 || x < 1 || y > 3 || y < 1 {
             None
         } else {
-            Some(self.board[(x*y-1) as usize])
+            Some(self.board[TicTacToe::pos(x, y)])
         }
     }
 
     // Returns None if no errors otherwise and error string
-    pub fn set(&mut self, x: i8, y: i8, c: char) -> Option<String> {
+    pub fn set(&mut self, x: i32, y: i32, c: char) -> Option<String> {
         match self.at(x, y) {
             None => Some(String::from("Position out of bounds")),
             Some(ch) => {
                 if ch != '_' {
                     Some(String::from("Position not empty"))
                 } else {
-                    self.board[(x*y-1) as usize] = c;
+                    self.board[TicTacToe::pos(x, y)] = c;
                     None
                 }
             }
         }
     }
 
-    // Returns 'x' or 'o' if one or the other has won '_' for game
-    // not over and None if its a draw
-    pub fn is_game_over(&self) -> Option<char> {
+    // returns true or false if the game is over or not
+    // and if the game is over returns 'x' or 'y' for the winner
+    // or '_' for a draw
+    pub fn is_game_over(&self) -> (bool, char) {
         // Each element is a Row, Column or Diagonal and represents
         // how many x's and how many o's are in it
         // 0-2: rows
@@ -75,7 +80,7 @@ impl TicTacToe {
                     }
 
                     if rcd[x].0 == 3 || rcd[y+3].0 == 3 || rcd[6].0 == 3 || rcd[7].0 == 3 {
-                        return Some('x');
+                        return (true, 'x');
                     }
                 },
                 'o' => {
@@ -92,17 +97,13 @@ impl TicTacToe {
                     }
 
                     if rcd[x].1 == 3 || rcd[y+3].1 == 3 || rcd[6].1 == 3 || rcd[7].1 == 3 {
-                        return Some('o');
+                        return (true, 'o');
                     }
                 },
                 _ => ()
             };
         }
 
-        if empty_positions == 0 {
-            None
-        } else {
-            Some('_')
-        }
+        (empty_positions == 0, '_')
     }
 }
