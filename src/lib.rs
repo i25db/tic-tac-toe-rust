@@ -57,8 +57,8 @@ impl TicTacToe {
         let mut empty_positions = 9;
 
         for (i, c) in self.board.into_iter().enumerate() {
-            let x = (i % 3) + 1;
-            let y = ((i / 3) % 3) + 1;
+            let x = i % 3;
+            let y = (i / 3) % 3;
 
             match c {
                 'x' => {
@@ -71,11 +71,10 @@ impl TicTacToe {
                     // i is on diagonal 1,1 when i % 4 == 0
                     if i % 4 == 0 {
                         rcd[6].0 += 1;
+                        println!("{}: {},{} Diagonal Count: {}", i, x, y, rcd[6].0);
                     }
                     // position is on diagonal 3,1 when x + y == 4
-                    // don't count 2,2 twice so we else if
-                    // besides 2,2 diagnoals share no positions
-                    else if x + y == 4 {
+                    if x + y + 2 == 4 {
                         rcd[7].0 += 1;
                     }
 
@@ -92,7 +91,9 @@ impl TicTacToe {
 
                     if i % 4 == 0 {
                         rcd[6].1 += 1;
-                    } else if x + y == 4 {
+                    }
+
+                    if x + y == 4 {
                         rcd[7].1 += 1;
                     }
 
