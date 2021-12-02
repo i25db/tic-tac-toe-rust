@@ -71,7 +71,6 @@ impl TicTacToe {
                     // i is on diagonal 1,1 when i % 4 == 0
                     if i % 4 == 0 {
                         rcd[6].0 += 1;
-                        println!("{}: {},{} Diagonal Count: {}", i, x, y, rcd[6].0);
                     }
                     // position is on diagonal 3,1 when x + y == 4
                     if x + y + 2 == 4 {
